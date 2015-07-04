@@ -31,7 +31,6 @@ public class Application implements CommandLineRunner {
 
 		public ApplicationConfig() {
 			setBasePackage(PACKAGENAME);
-			
 		}
 
 		@Bean
@@ -42,7 +41,6 @@ public class Application implements CommandLineRunner {
 
 	@Autowired PersonRepository personRepository;
 	@Autowired SkillRepository skillRepository;
-
 	@Autowired GraphDatabase graphDatabase;
 
 	public void run(String... args) throws Exception {
