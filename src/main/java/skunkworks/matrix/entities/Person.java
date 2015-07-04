@@ -10,6 +10,8 @@ import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
 
+import skunkworks.matrix.keys.Neo4jKeys;
+
 @NodeEntity
 public class Person {
 
@@ -21,7 +23,7 @@ public class Person {
     public Person() {}
     public Person(String name) { this.name = name; }
 
-    @RelatedTo(type="SKILL", direction=Direction.OUTGOING)
+    @RelatedTo(type=Neo4jKeys.LINK_LEARNEDSKILL, direction=Direction.BOTH)
     public @Fetch Set<Skill> skills;
     
     public void addSkill(Skill skill) {

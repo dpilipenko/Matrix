@@ -7,4 +7,6 @@ import skunkworks.matrix.entities.Skill;
 public interface SkillRepository extends CrudRepository<Skill, String> {
 
 	Skill findByName(String name);
+	
+	Iterable<Skill> findByPersonsName(String name);
 }
