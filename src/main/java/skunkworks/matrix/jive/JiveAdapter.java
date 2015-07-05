@@ -10,6 +10,7 @@ import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
 import retrofit.RestAdapter.Builder;
 import retrofit.client.OkClient;
+import retrofit.converter.GsonConverter;
 
 public class JiveAdapter {
 	
@@ -20,7 +21,7 @@ public class JiveAdapter {
 		Builder builder = new Builder()
 				.setEndpoint(ENDPOINT)
 				.setClient(new OkClient(new OkHttpClient())) // use OkHttp
-				.setConverter(new JiveResponseInterceptor(new Gson())) // clean up Response
+				.setConverter(new GsonConverter(new Gson()))
 				
 				.setRequestInterceptor(new RequestInterceptor() { // Add HTTP Authorization Header to each Request
 					@Override
