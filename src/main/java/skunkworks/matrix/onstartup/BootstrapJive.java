@@ -9,6 +9,7 @@ import skunkworks.matrix.entities.Person;
 import skunkworks.matrix.entities.Skill;
 import skunkworks.matrix.jive.JiveAdapter;
 import skunkworks.matrix.jive.JiveService;
+import skunkworks.matrix.jive.responses.EmailResponse;
 import skunkworks.matrix.jive.responses.PeopleResponse;
 import skunkworks.matrix.services.PersonService;
 import skunkworks.matrix.services.SkillService;
@@ -31,10 +32,29 @@ public class BootstrapJive {
 				"halley.marsh@rosetta.com"};
 		JiveService jiveService = JiveAdapter.generate();
 		for (String emailAddress : emailAddresses) {
-			PeopleResponse people = jiveService.getPeopleByEmail(emailAddress);
-			doPeoplePerson(people, personService, skillService);
+			EmailResponse people = jiveService.getPeopleByEmail(emailAddress);
+			doEmailPerson(people, personService, skillService);
 		}
 	}
+	
+	private static void doEmailPerson(EmailResponse email, PersonService personService, SkillService skillService){
+		// TODO Find better place for this method. Maybe some of this logic should be in Services?
+		List<Skill> skills = new ArrayList<>();
+		for (String skillName : email.tags) {
+			Skill skill = skillService.findByName(skillName);
+			if (skill == null) {
+				skill = new Skill(skillName);
+				skillService.addSkill(skill);
+			}
+			skills.add(skill);
+		}
+		Person person = personService.findByName(email.displayName);
+		if (person == null) {
+			person = new Person(email.displayName);
+		}
+		personService.addPerson(person, skills);
+}
+
 	
 	private static void doPeoplePerson(PeopleResponse people, PersonService personService, SkillService skillService) {
 		// TODO Find better place for this method. Maybe some of this logic should be in Services?
